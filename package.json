@@ -1,0 +1,32 @@
+{
+  "name": "fullstack-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TranKhang2003/fullstack-backend.git"
+  },
+  "keywords": [
+    "nodejs",
+    "react"
+  ],
+  "author": "ViKhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TranKhang2003/fullstack-backend/issues"
+  },
+  "homepage": "https://github.com/TranKhang2003/fullstack-backend#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "17.2.0",
+    "ejs": "^3.1.10",
+    "express": "5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

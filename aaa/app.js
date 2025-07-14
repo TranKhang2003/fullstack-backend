@@ -1,1 +1,0 @@
-console.log("Hello word with Vi Khang")
