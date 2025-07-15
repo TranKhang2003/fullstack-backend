@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const configViewEngine = require('./config/viewEngine');
 const webRoutes = require('./routes/web');   // path adjusted
+const connection = require('./config/database');
 
 const app = express();
 const port = process.env.PORT || 8888;
@@ -14,6 +15,17 @@ configViewEngine(app);
 
 // routes
 app.use('/', webRoutes);
+
+
+
+connection.query(
+    'select * from Users',
+    function (err, results, fields){
+        console.log(">>>> results: ",results);
+    }
+);
+
+
 
 // static files (optional)
 // app.use(express.static(path.join(__dirname, '../public')));
