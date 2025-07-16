@@ -1,7 +1,9 @@
-const connection = require('../config/database')
+const connection = require('../config/database');
+const {getAllUser, getUserById, deleteUserById} = require('../services/CRUDService');
 
-const getHomepage = (req, res) => {
-    return res.render('home.ejs')
+const getHomepage = async (req, res) => {
+    let results = await getAllUser()
+    return res.render('home.ejs', { listUsers: results })
 }
 
 const getABC = (req, res) => {
@@ -14,31 +16,48 @@ const getHoiDanIT = (req, res) => {
 
 const postCreateUser = async (req, res) => {
     let { email, myname, city } = req.body;
-    // connection.query(
-    //     'INSERT INTO Users (email, name, city) VALUES (?,?,?)',
-    //     [email, myname, city],                       // mảng giá trị tương ứng
-    //     (err, results) => {
-    //         if (err) {
-    //             console.error('Insert error:', err);     // xem lỗi chi tiết
-    //             return res.status(500).send('Lỗi khi thêm user');
-    //         }
-    //         console.log('>>> results:', results);      // OK
-    //         res.send('Create user succeed');
-    //     }
-    // );
-    // res.send('Create user succeed')
     let [results, fields] = await connection.query(
         'INSERT INTO Users (email, name, city) VALUES (?,?,?)',[email, myname, city],
     );
-    console.log('>>> check user: ', results);
-    res.send('Create user succeed');
+    // res.send('Create user succeed');
+    res.redirect('/')
 }
 
 const getCreatePage = (req, res) => {
     return res.render('create.ejs')
 }
 
+const getUpdatePage = async (req, res) => {
+    const userId = req.params.id
+    let user = await getUserById(userId)
+    return res.render('edit.ejs', { userEdit: user })
+}
+
+const postUpdateUser = async (req, res) => {
+    let { email, myname, city, id } = req.body;
+    let [results, fields] = await connection.query(
+        `UPDATE Users
+        SET email = ?,name = ?, city = ?
+        WHERE id = ?`
+        , [email, myname, city, id],
+    );
+    res.redirect('/')
+}
+
+const postDeleteUser = async (req, res) => {
+    let userId = req.params.id
+    let user = await getUserById(userId)
+    res.render('delete.ejs', { userEdit: user})
+}
+
+const postHandleRemoveUser = async (req, res) => {
+    let userId = req.body.id
+    await deleteUserById(userId)
+    res.redirect('/')
+}
+
 module.exports = {
     getHomepage, getABC, getHoiDanIT,
-    postCreateUser, getCreatePage
+    postCreateUser, getCreatePage, getUpdatePage,
+    postUpdateUser, postDeleteUser, postHandleRemoveUser
 }
